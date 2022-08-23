@@ -7,11 +7,12 @@ import {
   Autocomplete,
   TextField,
 } from '@mui/material';
-import { IContacts } from '../types/bank';
+import { BankTransferDTO, IContacts } from '../types/bank';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useAccountNumberValue, useBankBalanceValue, useContactsValue } from '../atoms/bank-atoms';
 import NumberFormat from 'react-number-format';
 import { styled } from '@mui/system';
+import { useBankAPI } from '../hooks/useBankAPI'
 
 const TransferArea = styled('div')({
   padding: 8,
@@ -33,6 +34,7 @@ const Account = () => {
   const contacts = useContactsValue();
   const [transferAccount, setTransferAccount] = useState<IContacts | string>('');
   const [transferAmmount, setTransferAmmount] = useState('');
+  const { transferMoney } = useBankAPI();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTransferAmmount(event.target.value);
@@ -44,6 +46,15 @@ const Account = () => {
     if (typeof transferAccount !== 'string' && transferAccount === null) return false;
     return true;
   };
+
+  const handleTransfer = () => {
+    const data: BankTransferDTO = {
+      amount: Number(transferAmmount),
+      toAccount: transferAccount,
+      transferType: typeof transferAccount !== 'string' ? 'contact' : 'accountNumber'
+    }
+    transferMoney(data) 
+  }
 
   return (
     <BankingPage>
@@ -101,7 +112,7 @@ const Account = () => {
 
         <Button
           disabled={!canTransfer()}
-          onClick={() => console.log(transferAccount, transferAmmount)}
+          onClick={handleTransfer}
           variant="outlined"
         >
           Transfer

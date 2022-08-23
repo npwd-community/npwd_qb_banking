@@ -8,5 +8,5 @@ export interface IContacts {
 export interface BankTransferDTO {
     amount: number;
     toAccount: string | IContacts;
-    transferType: 'accountNumber' | 'contact';
+    transferType: "accountNumber" | "contact";
 }
