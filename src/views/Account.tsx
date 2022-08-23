@@ -18,14 +18,15 @@ const TransferArea = styled('div')({
   padding: 8,
   display: 'flex',
   flexDirection: 'column',
-  gap: 12,
+  gap: 12
 });
 
 const BankingPage = styled('div')({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  height: '100%'
+  height: '100%',
+  padding: '1.5rem'
 })
 
 const Account = () => {
@@ -97,6 +98,7 @@ const Account = () => {
                 },
               }}
               label="Transfer To"
+              placeholder="Search contacts or enter account number"
               onChange={(e) => setTransferAccount(e.currentTarget.value)}
             />
           )}

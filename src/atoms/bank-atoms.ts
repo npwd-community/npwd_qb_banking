@@ -2,8 +2,8 @@ import { atom, selector, useRecoilValue, useSetRecoilState } from 'recoil';
 import fetchNui from '../utils/fetchNui';
 import { ServerPromiseResp } from '../types/common';
 import { isEnvBrowser } from '../utils/misc';
-import { IContacts } from '../types/bank';
-import { MockContacts } from '../utils/constants';
+import { IContacts, IInvoice } from '../types/bank';
+import { MockContacts, MockInvoices } from '../utils/constants';
 
 export const bankStates = {
   bankBalance: atom({
@@ -72,6 +72,28 @@ export const bankStates = {
       },
     }),
   }),
+  invoiceList: atom({
+    key: 'invoiceList',
+    default: selector<IInvoice[]>({
+      key: 'defaultInvoiceList',
+      get: async () => {
+        try {
+        const resp = await fetchNui<ServerPromiseResp<IInvoice[]>>('npwd:qb-banking:getInvoices');
+          if (!resp.data) {
+            console.log('no response data');
+            return [];
+          }
+          return resp.data;
+        } catch (e) {
+          if (isEnvBrowser()) {
+            return MockInvoices;
+          }
+          console.error(e);
+          return [];
+        }
+      },
+    }),
+  }),
 };
 
 export const useBankBalanceValue = () => useRecoilValue(bankStates.bankBalance);
@@ -80,3 +102,6 @@ export const useSetBankBalance = () => useSetRecoilState(bankStates.bankBalance)
 export const useAccountNumberValue = () => useRecoilValue(bankStates.accountNumber);
 
 export const useContactsValue = () => useRecoilValue(bankStates.contacts);
+
+export const useInvoiceListValue = () => useRecoilValue(bankStates.invoiceList);
+export const useSetInvoiceList = () => useSetRecoilState(bankStates.invoiceList)

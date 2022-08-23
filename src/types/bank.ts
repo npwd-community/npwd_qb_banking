@@ -10,3 +10,12 @@ export interface BankTransferDTO {
     toAccount: string | IContacts;
     transferType: "accountNumber" | "contact";
 }
+
+export interface IInvoice {
+    id: number;
+    citizenid: string;
+    amount: number;
+    society: string;
+    sender: string;
+    sendercitizenid: string;
+}

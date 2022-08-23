@@ -36,7 +36,6 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  padding: 1.5rem;
   max-height: calc(100% - 3.5rem - ${HEADER_HEIGHT});
   overflow: auto;
 `;
