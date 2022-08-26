@@ -1,11 +1,11 @@
 fx_version "cerulean"
 game "gta5"
 
-client_script 'dist/client.js'
+client_script 'client/client.lua'
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
-    'dist/server.js'
+    'server/server.lua'
 }
 
 shared_scripts {

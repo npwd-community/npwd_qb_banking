@@ -71,7 +71,7 @@ end)
 
 QBCore.Functions.CreateCallback("npwd:qb-banking:payInvoice", function(source, cb, data)
 	local src = source
-	local SenderPlayer = QBCore.Functions.GetPlayer(data.sendercitizenid)
+	local SenderPlayer = QBCore.Functions.GetPlayerByCitizenId(data.sendercitizenid)
 	local Player = QBCore.Functions.GetPlayer(src)
 	local society = data.society
 	local amount = data.amount
@@ -85,7 +85,7 @@ QBCore.Functions.CreateCallback("npwd:qb-banking:payInvoice", function(source, c
 
 	Player.Functions.RemoveMoney('bank', amount, "paid-invoice")
 
-	if not Config.BillingComissions[society] then
+	if not Config.BillingCommissions[society] then
 		invoiceMailData = {
 			sender = 'Billing Department',
 			subject = 'Bill Paid',
@@ -93,7 +93,7 @@ QBCore.Functions.CreateCallback("npwd:qb-banking:payInvoice", function(source, c
 		}
 	end	
 
-	if Config.BillingComissions[society] then
+	if Config.BillingCommissions[society] then
 		local commission = round(amount * Config.BillingCommissions[society])
 		invoiceMailData = {
             sender = 'Billing Department',
@@ -104,7 +104,7 @@ QBCore.Functions.CreateCallback("npwd:qb-banking:payInvoice", function(source, c
 			SenderPlayer.Functions.AddMoney('bank', commission)
 		else
 			local RecieverDetails = MySQL.query.await("SELECT money FROM players WHERE citizenid = ?", { data.sendercitizenid })
-			local RecieverMoney = json.decode(RecieverDetails)
+			local RecieverMoney = json.decode(RecieverDetails[1].money)
 			RecieverMoney.bank = (RecieverMoney.bank + commission)
 			MySQL.update(
 				"UPDATE players SET money = ? WHERE citizenid = ?",
@@ -113,11 +113,11 @@ QBCore.Functions.CreateCallback("npwd:qb-banking:payInvoice", function(source, c
 		end
 		amount = amount - commission
 	end
-
 	TriggerEvent('qb-phone:server:sendNewMailToOffline', data.sendercitizenid, invoiceMailData)
 	exports['qb-management']:AddMoney(society, amount)
 	MySQL.query('DELETE FROM phone_invoices WHERE id = ?', {invoiceId})
-	cb(Player.Functions.GetMoney("bank"))
+	local newBalance = Player.Functions.GetMoney("bank")
+	cb(newBalance)
 end)
 
 QBCore.Functions.CreateCallback("npwd:qb-banking:transferMoney", function(source, cb, amount, toAccount, transferType)
