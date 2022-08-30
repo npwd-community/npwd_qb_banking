@@ -71,9 +71,9 @@ RegisterNUICallback("npwd:qb-banking:payInvoice", function(data, cb)
 end)
 
 RegisterNetEvent('npwd:qb-banking:updateMoney', function(balance)
-    exports.npwd:sendUIMessage('npwd:qb-banking:updateMoney', {balance})
+  exports.npwd:sendUIMessage({type = "npwd:qb-banking:updateMoney", payload = {balance}})
 end)
 
 RegisterNetEvent('npwd:qb-banking:newInvoice', function(data)
-  exports.npwd:sendUIMessage('npwd:qb-banking:newInvoice', {data})
+  exports.npwd:sendUIMessage({type = "npwd:qb-banking:newInvoice", payload = {data}})
 end)
