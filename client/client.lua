@@ -33,7 +33,7 @@ end)
 RegisterNUICallback("npwd:qb-banking:transferMoney", function(data, cb)
   QBCore.Functions.TriggerCallback("npwd:qb-banking:transferMoney", function(result)
     if result then 
-      cb({ status = "ok", data = result })
+      cb({ status = "ok", data = tonumber(result) })
     else
       cb({status = "error"})
     end

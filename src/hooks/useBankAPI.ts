@@ -32,6 +32,13 @@ export const useBankAPI = (): BankAPIValue => {
         });
       }
 
+      if (!resp.data || typeof resp.data !== "number") {
+        return addAlert({
+          message: 'Money Transfered, issue with updating balance',
+          type: 'warning',
+        });
+      }
+
       updateBalance(resp.data)
 
       addAlert({

@@ -74,7 +74,7 @@ QBCore.Functions.CreateCallback("npwd:qb-banking:payInvoice", function(source, c
 	local SenderPlayer = QBCore.Functions.GetPlayerByCitizenId(data.sendercitizenid)
 	local Player = QBCore.Functions.GetPlayer(src)
 	local society = data.society
-	local amount = data.amount
+	local amount = tonumber(data.amount)
 	local invoiceId = data.id
 	local invoiceMailData = {}
 	local balance = Player.Functions.GetMoney("bank")
@@ -124,7 +124,7 @@ QBCore.Functions.CreateCallback("npwd:qb-banking:transferMoney", function(source
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)
 	local balance = Player.Functions.GetMoney("bank")
-	local amount = amount
+	local amount = tonumber(amount)
 	local toAccount = toAccount
 	local RecieverDetails
 
@@ -142,7 +142,6 @@ QBCore.Functions.CreateCallback("npwd:qb-banking:transferMoney", function(source
 
 	if transferType == "accountNumber" then
 		for _, v in pairs(bannedCharacters) do --strip bad characters
-			amount = string.gsub(amount, "%" .. v, "")
 			toAccount = string.gsub(toAccount, "%" .. v, "")
 		end
 		local query = '%"account":"' .. toAccount .. '"%'
