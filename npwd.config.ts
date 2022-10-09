@@ -1,6 +1,6 @@
 import App from './src/App';
-import { AppIcon } from './icon';
-import { APP_PRIMARY_COLOR } from './src/app.theme'
+import { AppIcon, NotificationIcon } from './icon';
+import { APP_PRIMARY_COLOR } from './src/app.theme';
 
 const defaultLanguage = 'en';
 const localizedAppName = {
@@ -19,5 +19,6 @@ export default (settings: Settings) => ({
   color: '#fff',
   backgroundColor: APP_PRIMARY_COLOR,
   icon: AppIcon,
+  notificationIcon: NotificationIcon,
   app: App,
 });
